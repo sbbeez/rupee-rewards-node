@@ -26,8 +26,8 @@ const userSchema = new Schema({
     type: Date,
     default: Date.now()
   },
-  token:{
-    type:String,
+  token: {
+    type: String,
     default: null
   }
 });

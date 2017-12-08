@@ -4,16 +4,16 @@ const Reward = mongoose.model("reward");
 const moment = require("moment");
 const keys = require("../config/keys");
 const jwt = require("jwt-simple");
+const regexDigits = /^\d+$/;
 
 exports.signUp = (req, res) => {
   const body = req.body;
-  const regexPhone = /^\d+$/;
   const regexEmail = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
   const email = body.email;
   const phone = body.phone;
   const gender = body.gender;
   const date_of_birth = body.date_of_birth;
-  if (phone.toString().length !== 10 || !regexPhone.test(phone) || !phone) {
+  if (phone.toString().length !== 10 || !regexDigits.test(phone) || !phone) {
     return res.send({ message: "Please enter valid Phone Number" });
   }
   if (!(email.toString().length > 7) || !regexEmail.test(email) || !email) {
@@ -49,8 +49,7 @@ exports.signUp = (req, res) => {
 
 exports.signIn = (req, res) => {
   const phone = req.body.phone;
-  const regexPhone = /^\d+$/;
-  if (!phone || !regexPhone.test(phone) || !(phone.length === 10)) {
+  if (!phone || !regexDigits.test(phone) || !(phone.length === 10)) {
     return res.send({ message: "Please enter a valid Phone Number" });
   }
   User.findOne({ phone: phone }, (err, existingPhone) => {
@@ -67,15 +66,13 @@ exports.signIn = (req, res) => {
 exports.verifyOtp = (req, res) => {
   const phone = req.body.phone;
   const otp = req.body.otp;
-  const regexPhone = /^\d+$/;
-  if (!phone || !regexPhone.test(phone) || phone.toString().length !== 10) {
+  if (!phone || !regexDigits.test(phone) || phone.toString().length !== 10) {
     return res.send({ message: "Please enter a valid Phone Number" });
   }
-  if (!otp || !regexPhone.test(otp) || !(otp.toString().length === 4)) {
+  if (!otp || !regexDigits.test(otp) || !(otp.toString().length === 4)) {
     return res.send({ message: "Please enter a valid OTP" });
   }
   User.findOne({ phone: phone }, (err, user) => {
-    console.log(user.id);
     User.updateOne(
       { _id: user.id },
       { token: generateToken(user) }

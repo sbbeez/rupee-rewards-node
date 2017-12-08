@@ -1,5 +1,5 @@
 const passport = require("passport");
-const mongoose = require("mongoose")
+const mongoose = require("mongoose");
 const User = mongoose.model("user");
 const keys = require("../config/keys");
 const JwtStrategy = require("passport-jwt").Strategy;
@@ -22,4 +22,4 @@ const jwtLogin = new JwtStrategy(jwtOptions, (payload, done) => {
   });
 });
 
-passport.use(jwtLogin)
+passport.use(jwtLogin);

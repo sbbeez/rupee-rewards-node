@@ -16,8 +16,12 @@ app.use(bodyParser.json({ type: "*/*" }));
 
 //App set up
 require("./models/user");
+require("./models/adswatched");
 require("./models/reward");
+require("./models/adminuser");
 require("./Routes/authRoutes")(app);
 require("./Routes/rewardRoutes")(app);
+require("./Routes/adminAuthRoutes")(app);
+require("./Routes/adminDashboardRoutes")(app);
 
 app.listen(3000);
